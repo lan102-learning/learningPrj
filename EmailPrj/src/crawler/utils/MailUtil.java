@@ -11,6 +11,10 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import org.apache.log4j.Logger;
+
+import crawler.fjnuHqjtNotice.FjnuHqjtNoticeCrawler;
+
 /**
  * 邮件工具
  * 
@@ -18,6 +22,8 @@ import javax.mail.internet.MimeMessage;
  *
  */
 public class MailUtil {
+	private static Logger logger = Logger.getLogger(MailUtil.class);
+	
     // PS: 某些邮箱服务器为了增加邮箱本身密码的安全性，给 SMTP 客户端设置了独立密码（有的邮箱称为“授权码”）,
     // 对于开启了独立密码的邮箱, 这里的邮箱密码必需使用这个独立密码（授权码）。
     // public static String myEmailAccount = "dayinz1@sina.com";//发送邮箱
@@ -48,20 +54,29 @@ public class MailUtil {
 			myEmailSMTPHost = properties.getProperty("myEmailSMTPHost");
 			port = properties.getProperty("port");
 			sendMail = properties.getProperty("sendMail");
-			sendMailPassword = properties.getProperty("sendMailPassword");
+			//解密密码
+			String password = properties.getProperty("sendMailPassword");
+			byte[] bytes=null;
+			bytes = EncryptionUtil.decode(EncryptionUtil.hex2byte(password), "asiainfo".getBytes());		
+			sendMailPassword = new String(bytes);
+			//===========
 			sendName = properties.getProperty("sendName");
 			receiveMail = properties.getProperty("receiveMail");
 			receiveName = properties.getProperty("receiveName");
 			charset = properties.getProperty("charset");
 			
 		} catch (IOException e) {
+			logger.error(e);
+			e.printStackTrace();
+		} catch (Exception e) {
+			logger.error(e);
 			e.printStackTrace();
 		}
     }
     
     
     public static void main(String[] args) throws Exception {
-    	
+    	System.out.println(sendMailPassword);
     }
 
     /**
@@ -148,6 +163,7 @@ public class MailUtil {
             // 7. 关闭连接
             transport.close();
         } catch (Exception e) {
+        	logger.error(e);
             e.printStackTrace();
         }
     }

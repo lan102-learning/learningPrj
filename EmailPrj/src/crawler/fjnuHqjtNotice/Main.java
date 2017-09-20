@@ -1,13 +1,12 @@
 package crawler.fjnuHqjtNotice;
 
 import java.util.List;
-
 import crawler.utils.MailUtil;
 
 public class Main {
 
     private static FjnuHqjtNoticeCrawler noticeCrawler = new FjnuHqjtNoticeCrawler();
-
+   
     public static void main(String[] args) {
         List<FjnuHqjtNoticeBean> list = noticeCrawler.getNoticeList();
         for (FjnuHqjtNoticeBean fjnuHqjtNoticeBean : list) {

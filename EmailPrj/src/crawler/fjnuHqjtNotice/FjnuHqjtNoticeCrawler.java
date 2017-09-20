@@ -7,9 +7,13 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.log4j.Logger;
+
 import crawler.utils.Utils;
 
 public class FjnuHqjtNoticeCrawler {
+	private static Logger logger = Logger.getLogger(FjnuHqjtNoticeCrawler.class);
+	
     /** 目标url */
     final static String Url = "http://hqjt.fjnu.edu.cn/4234/list.htm";
     /** 搜索url和标题正则表达式 groupid 1-url 2-标题 */
@@ -28,6 +32,7 @@ public class FjnuHqjtNoticeCrawler {
         try {
             Utils.downloadHtml(Url, "test.html");
         } catch (IOException e) {
+        	logger.error(e);
             e.printStackTrace();
         }
         List<String> noticeStringList = new ArrayList<String>();// 通知字符集
@@ -70,8 +75,10 @@ public class FjnuHqjtNoticeCrawler {
         try {
             Utils.downloadHtml(noticeBean.getUrl(), "test2.html");
         } catch (MalformedURLException e) {
+        	logger.error(e.getMessage());
             e.printStackTrace();
         } catch (IOException e) {
+        	logger.error(e.getMessage());
             e.printStackTrace();
         }
         // 将源码全面读取到String中
