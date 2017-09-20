@@ -1,5 +1,8 @@
 package crawler.utils;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Date;
 import java.util.Properties;
 
@@ -22,20 +25,43 @@ public class MailUtil {
     // public static String myEmailSMTPHost = "smtp.sina.com";//发件人邮箱的 SMTP 服务器地址
     // public static String receiveMailAccount = "903914294@qq.com";//收件邮箱
 
-    private final static String myEmailSMTPHost = "smtp.sina.com";// 发件人邮箱的 SMTP 服务器地址
-    private final static String port = "143";// 端口
-    private final static String sendMail = "dayinz1@sina.com";// 发送邮箱账号
-    private final static String sendMailPassword = "a123456";// 发送邮箱密码
-    private final static String sendName = "咸鱼康";// 发送人
-    private final static String receiveMail = "347579300@qq.com";// 收件邮箱;
-    private final static String receiveName = "收件人";// 收件人;
-    private final static String subject = "主题";// 主题;
-    private final static String contant = "内容";// 内容;
-    private final static String charset = "utf-8";// 编码;
+    private static String myEmailSMTPHost;// 发件人邮箱的 SMTP 服务器地址
+    private static String port;// 端口
+    private static String sendMail;// 发送邮箱账号
+    private static String sendMailPassword;// 发送邮箱密码
+    private static String sendName;// 发送人
+    private static String receiveMail;// 收件邮箱;
+    private static String receiveName;// 收件人;
+    private static String charset = "utf-8";// 编码;
 
+    
+    //初始化邮箱信息
+    static{
+    	Properties properties = new Properties();
+    	//加载配置文件
+    	InputStream is = MailUtil.class.getClassLoader().getResourceAsStream("mail.properties");
+    	
+    	try {
+			properties.load(new InputStreamReader(is,"UTF-8"));		
+			
+			
+			myEmailSMTPHost = properties.getProperty("myEmailSMTPHost");
+			port = properties.getProperty("port");
+			sendMail = properties.getProperty("sendMail");
+			sendMailPassword = properties.getProperty("sendMailPassword");
+			sendName = properties.getProperty("sendName");
+			receiveMail = properties.getProperty("receiveMail");
+			receiveName = properties.getProperty("receiveName");
+			charset = properties.getProperty("charset");
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+    }
+    
+    
     public static void main(String[] args) throws Exception {
-        sendMailBySmtp(myEmailSMTPHost, port, sendMail, sendMailPassword, sendName, receiveMail, receiveName, subject,
-                contant, charset);
+    	
     }
 
     /**
@@ -54,7 +80,16 @@ public class MailUtil {
         // 2. From: 发件人（昵称有广告嫌疑，避免被邮件服务器误认为是滥发广告以至返回失败，请修改昵称）
         message.setFrom(new InternetAddress(sendMail, sendName, charset));
         // 3. To: 收件人（可以增加多个收件人、抄送、密送）
-        message.setRecipient(MimeMessage.RecipientType.TO, new InternetAddress(receiveMail, receiveName, charset));
+        //3.1 分割receiveMail 和  receiveName
+        String [] reMails = receiveMail.split(",");  
+        String[] reNames = receiveName.split(",");
+        //3.2 创建addresses 数组
+        InternetAddress[] addresses = new InternetAddress[reMails.length];
+        for(int i = 0;i<reMails.length;i++){
+        	addresses[i] = new InternetAddress(reMails[i],reNames[i],charset);
+        }    
+//      message.setRecipient(MimeMessage.RecipientType.TO, new InternetAddress(receiveMail, receiveName, charset)); 
+        message.setRecipients(MimeMessage.RecipientType.TO, addresses);
         // 4. Subject: 邮件主题（标题有广告嫌疑，避免被邮件服务器误认为是滥发广告以至返回失败，请修改标题）
         message.setSubject(subject, charset);
         // 5. Content: 邮件正文（可以使用html标签）（内容有广告嫌疑，避免被邮件服务器误认为是滥发广告以至返回失败，请修改发送内容）
@@ -66,8 +101,7 @@ public class MailUtil {
         return message;
     }
 
-    public static void sendMailBySmtp(String myEmailSMTPHost, String port, String sendMail, String sendMailPassword,
-            String sendName, String receiveMail, String receiveName, String subject, String contant, String charset) {
+    public static void sendMailBySmtp(String subject,String contant) {
         // 1. 创建参数配置, 用于连接邮件服务器的参数配置
         Properties props = new Properties(); // 参数配置
         props.setProperty("mail.transport.protocol", "smtp"); // 使用的协议（JavaMail规范要求）
@@ -117,11 +151,6 @@ public class MailUtil {
             e.printStackTrace();
         }
     }
-
-    public static void sendGroupMailBySmtp(String myEmailSMTPHost, String port, String sendMail,
-            String sendMailPassword, String sendName, String receiveMail, String receiveName, String subject,
-            String contant, String charset) throws Exception {
-        sendMailBySmtp(myEmailSMTPHost, port, sendMail, sendMailPassword, sendName, receiveMail, receiveName, subject,
-                contant, charset);
-    }
+    
+    
 }
