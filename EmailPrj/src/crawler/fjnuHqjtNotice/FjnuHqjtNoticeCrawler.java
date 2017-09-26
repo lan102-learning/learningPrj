@@ -1,5 +1,6 @@
 package crawler.fjnuHqjtNotice;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
@@ -12,8 +13,8 @@ import org.apache.log4j.Logger;
 import crawler.utils.Utils;
 
 public class FjnuHqjtNoticeCrawler {
-	private static Logger logger = Logger.getLogger(FjnuHqjtNoticeCrawler.class);
-	
+    private static Logger logger = Logger.getLogger(FjnuHqjtNoticeCrawler.class);
+
     /** 目标url */
     final static String Url = "http://hqjt.fjnu.edu.cn/4234/list.htm";
     /** 搜索url和标题正则表达式 groupid 1-url 2-标题 */
@@ -28,16 +29,22 @@ public class FjnuHqjtNoticeCrawler {
             "<tr>\\s*<td.*><a href=.*>.*</a></td>\\s*<td.*><div.*>" + Utils.getToday() + "</div></td>\\s*</tr>");
 
     public List<FjnuHqjtNoticeBean> getNoticeList() {
+        // 创建临时文件目录
+        File file = new File("temp");
+        System.out.println(file.getAbsolutePath());
+        if (!file.exists()) {
+            System.out.println(file.mkdirs());
+        }
         // 获得网页源码
         try {
-            Utils.downloadHtml(Url, "test.html");
+            Utils.downloadHtml(Url, "temp/test.html");
         } catch (IOException e) {
-        	logger.error(e);
+            logger.error(e);
             e.printStackTrace();
         }
         List<String> noticeStringList = new ArrayList<String>();// 通知字符集
         // 将源码全面读取到String中
-        String fileString = Utils.readToString("test.html", "utf-8");
+        String fileString = Utils.readToString("temp/test.html", "utf-8");
         Matcher beanStringMatcher = SEARCH_PATTERN.matcher(fileString);// 根据正则表达式匹配对应的块
         while (beanStringMatcher.find()) {// 将所有匹配的块加入到 通知集中
             noticeStringList.add(beanStringMatcher.group());
@@ -62,27 +69,25 @@ public class FjnuHqjtNoticeCrawler {
             // 添加bean到List中
             noticeBeanList.add(noticeBean);
         }
+        //删除临时文件
+        Utils.deleteDir(file);
         return noticeBeanList;
-        /*
-         * for (FjnuHqjtNoticeBean fjnuHqjtNoticeBean : noticeBeanList) {
-         * System.out.println(fjnuHqjtNoticeBean);
-         * System.out.println("==========================="); }
-         */
+
     }
 
     private static void getNoticeContant(FjnuHqjtNoticeBean noticeBean) {
         // 下载源码
         try {
-            Utils.downloadHtml(noticeBean.getUrl(), "test2.html");
+            Utils.downloadHtml(noticeBean.getUrl(), "temp/test2.html");
         } catch (MalformedURLException e) {
-        	logger.error(e.getMessage());
+            logger.error(e.getMessage());
             e.printStackTrace();
         } catch (IOException e) {
-        	logger.error(e.getMessage());
+            logger.error(e.getMessage());
             e.printStackTrace();
         }
         // 将源码全面读取到String中
-        String fileString = Utils.readToString("test2.html", "utf-8");
+        String fileString = Utils.readToString("temp/test2.html", "utf-8");
         // 匹配内容
         Matcher noticeObjectmatcher = CONTANT_PATTERN.matcher(fileString);
         while (noticeObjectmatcher.find()) {

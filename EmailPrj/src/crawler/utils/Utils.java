@@ -77,7 +77,27 @@ public class Utils {
      */
     public static String getToday() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        return sdf.format(new Date());
+//        return sdf.format(new Date());
+          return "2017-09-21";
     }
 
+    /**
+     * 删除目录下所有文件（包括目录本身）
+     * @param dir 
+     * @return
+     */
+    public static boolean deleteDir(File dir) {
+        if (dir.isDirectory()) {
+            String[] children = dir.list();
+            //递归删除目录下文件
+            for (int i=0; i<children.length; i++) {
+                boolean success = deleteDir(new File(dir, children[i]));
+                if (!success) {
+                    return false;
+                }
+            }
+        }
+        // 目录此时为空，可以删除
+        return dir.delete();
+    }
 }
