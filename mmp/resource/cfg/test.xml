@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<service id="fjnuHqjtNoticeService">
+		<property name="service-class" value="service.FjnuHqjtNoticeService" />
+		<property name="service-prop" value="resource/prop/mail_fjnuHqjtNotice.properties" />
+	</service>
+	<service id="weatherNoticeService">
+		<property name="service-class" value="service.WeatherNoticeService" />
+		<property name="service-prop" value="resource/prop/mail_weatherNotice.properties" />
+	</service>
+</configuration>
