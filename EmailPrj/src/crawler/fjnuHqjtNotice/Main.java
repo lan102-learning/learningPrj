@@ -13,8 +13,8 @@ public class Main {
             String subject = fjnuHqjtNoticeBean.getTittle();// 主题;
             String contant = "&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp" + fjnuHqjtNoticeBean.getContant() + "<br><br>详情见"
                     + fjnuHqjtNoticeBean.getUrl() + "<br><br>" + fjnuHqjtNoticeBean.getDate();// 内容;
-//            MailUtil.sendMailBySmtp(subject, contant);
-            System.out.println("主题："+subject+"\n内容："+contant);
+            MailUtil.sendMailBySmtp(subject, contant);
+//            System.out.println("主题："+subject+"\n内容："+contant+"\n===================================\n");
         }
     }
     

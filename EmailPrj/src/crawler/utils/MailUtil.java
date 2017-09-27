@@ -13,7 +13,6 @@ import javax.mail.internet.MimeMessage;
 
 import org.apache.log4j.Logger;
 
-import crawler.fjnuHqjtNotice.FjnuHqjtNoticeCrawler;
 
 /**
  * 邮件工具
@@ -101,7 +100,12 @@ public class MailUtil {
         //3.2 创建addresses 数组
         InternetAddress[] addresses = new InternetAddress[reMails.length];
         for(int i = 0;i<reMails.length;i++){
-        	addresses[i] = new InternetAddress(reMails[i],reNames[i],charset);
+            if(reNames[i]==null) {
+                addresses[i] = new InternetAddress(reMails[i],reMails[i],charset);
+            }else {
+                addresses[i] = new InternetAddress(reMails[i],reNames[i],charset);
+            }
+        	
         }    
 //      message.setRecipient(MimeMessage.RecipientType.TO, new InternetAddress(receiveMail, receiveName, charset)); 
         message.setRecipients(MimeMessage.RecipientType.TO, addresses);

@@ -77,8 +77,8 @@ public class Utils {
      */
     public static String getToday() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-//        return sdf.format(new Date());
-          return "2017-09-21";
+        return sdf.format(new Date());
+//          return "2017-09-21";
     }
 
     /**

@@ -31,9 +31,9 @@ public class FjnuHqjtNoticeCrawler {
     public List<FjnuHqjtNoticeBean> getNoticeList() {
         // 创建临时文件目录
         File file = new File("temp");
-        System.out.println(file.getAbsolutePath());
+//        System.out.println(file.getAbsolutePath());
         if (!file.exists()) {
-            System.out.println(file.mkdirs());
+            logger.info("创建临时文件夹"+file.mkdirs());
         }
         // 获得网页源码
         try {
@@ -42,26 +42,24 @@ public class FjnuHqjtNoticeCrawler {
             logger.error(e);
             e.printStackTrace();
         }
-        List<String> noticeStringList = new ArrayList<String>();// 通知字符集
+//        List<String> noticeStringList = new ArrayList<String>();// 通知字符集
         // 将源码全面读取到String中
         String fileString = Utils.readToString("temp/test.html", "utf-8");
+        List<FjnuHqjtNoticeBean> noticeBeanList = new ArrayList<>(); //notice 结果集
+        String tempNoticeString = null; //notice 临时字符串
         Matcher beanStringMatcher = SEARCH_PATTERN.matcher(fileString);// 根据正则表达式匹配对应的块
         while (beanStringMatcher.find()) {// 将所有匹配的块加入到 通知集中
-            noticeStringList.add(beanStringMatcher.group());
-        }
-        List<FjnuHqjtNoticeBean> noticeBeanList = new ArrayList<>();
-        // 遍历-生成-bean集合
-        for (String noticeString : noticeStringList) {
+            tempNoticeString = beanStringMatcher.group();
             FjnuHqjtNoticeBean noticeBean = new FjnuHqjtNoticeBean();
             // 匹配url和标题
-            Matcher noticeObjectmatcher = URL_AND_TITTLE_BEGGER.matcher(noticeString);
+            Matcher noticeObjectmatcher = URL_AND_TITTLE_BEGGER.matcher(tempNoticeString);
             while (noticeObjectmatcher.find()) {
                 String tempUrl = Url.substring(0, Url.length() - 9);
                 noticeBean.setUrl(tempUrl + noticeObjectmatcher.group(1));
                 noticeBean.setTittle(noticeObjectmatcher.group(2));
             }
             // 匹配时间
-            noticeObjectmatcher = DATE_PATTERN.matcher(noticeString);
+            noticeObjectmatcher = DATE_PATTERN.matcher(tempNoticeString);
             while (noticeObjectmatcher.find()) {
                 noticeBean.setDate(noticeObjectmatcher.group(1));
             }
@@ -72,9 +70,12 @@ public class FjnuHqjtNoticeCrawler {
         //删除临时文件
         Utils.deleteDir(file);
         return noticeBeanList;
-
     }
 
+    /**
+     * 获取bean的内容
+     * @param noticeBean （需含url）
+     */
     private static void getNoticeContant(FjnuHqjtNoticeBean noticeBean) {
         // 下载源码
         try {
