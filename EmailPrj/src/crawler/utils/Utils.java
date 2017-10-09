@@ -1,12 +1,16 @@
 	package crawler.utils;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -41,7 +45,32 @@ public class Utils {
         out.close();
 
     }
-
+    
+    /**
+     * 从url获取json数据（String格式）
+     * @param urlPath
+     * @param charSet
+     * @return 
+     * @throws IOException
+     */
+   public static String getJsonStringFromWs(String urlPath,String charSet) throws IOException {
+        URL url = new URL(urlPath);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();//打开链接
+        connection.connect();
+        InputStream inputStream = connection.getInputStream();
+        // 对应的字符编码转换
+        Reader reader = new InputStreamReader(inputStream, charSet);
+        BufferedReader bufferedReader = new BufferedReader(reader);
+        String tempStr = null;
+        StringBuffer sb = new StringBuffer();
+        while ((tempStr = bufferedReader.readLine()) != null) {
+            sb.append(tempStr);
+        }
+        reader.close();
+        connection.disconnect();
+        return sb.toString();
+    }
+    
     /**
      * 将整个文件读到String
      * 
@@ -77,8 +106,8 @@ public class Utils {
      */
     public static String getToday() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-//        return sdf.format(new Date());
-          return "2017-09-21";
+        return sdf.format(new Date());
+//          return "2017-09-21";
     }
 
     /**

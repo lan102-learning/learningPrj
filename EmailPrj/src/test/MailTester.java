@@ -41,10 +41,10 @@ public class MailTester {
         //                  需要改为对应邮箱的 SMTP 服务器的端口, 具体可查看对应邮箱服务的帮助,
         //                  QQ邮箱的SMTP(SLL)端口为465或587, 其他邮箱自行去查看)
         final String smtpPort = "143";
-       /*props.setProperty("mail.smtp.port", smtpPort);
+        props.setProperty("mail.smtp.port", smtpPort);/*
         props.setProperty("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
         props.setProperty("mail.smtp.socketFactory.fallback", "false");
-        */props.setProperty("mail.smtp.socketFactory.port", smtpPort);
+        props.setProperty("mail.smtp.socketFactory.port", smtpPort);*/
         
 
         // 2. 根据配置创建会话对象, 用于和邮件服务器交互
