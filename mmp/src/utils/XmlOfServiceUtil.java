@@ -11,7 +11,11 @@ import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
-
+/**
+ * service的xml 解析工具类
+ * @author cwj
+ *
+ */
 public class XmlOfServiceUtil {
 	private String contextPath = null;
 	

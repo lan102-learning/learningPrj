@@ -29,53 +29,31 @@ public class MailUtil {
     // public static String myEmailSMTPHost = "smtp.sina.com";//发件人邮箱的 SMTP 服务器地址
     // public static String receiveMailAccount = "903914294@qq.com";//收件邮箱
 
-    private static String myEmailSMTPHost;// 发件人邮箱的 SMTP 服务器地址
-    private static String port;// 端口
-    private static String sendMail;// 发送邮箱账号
-    private static String sendMailPassword;// 发送邮箱密码
-    private static String sendName;// 发送人
-    private static String receiveMail;// 收件邮箱;
-    private static String receiveName;// 收件人;
-    private static String charset;// 编码;
+    private  String myEmailSMTPHost;// 发件人邮箱的 SMTP 服务器地址
+    private  String port;// 端口
+    private  String sendMail;// 发送邮箱账号
+    private  String sendMailPassword;// 发送邮箱密码
+    private  String sendName;// 发送人
+    private  String receiveMail;// 收件邮箱;
+    private  String receiveName;// 收件人;
+    private  String charset;// 编码;
 
     
-    //初始化邮箱信息
-    static{
-    	Properties properties = new Properties();
-    	//加载配置文件
-    	InputStream is = MailUtil.class.getClassLoader().getResourceAsStream("mail.properties");
-    	
-    	try {
-			properties.load(new InputStreamReader(is,"UTF-8"));		
-			
-			
-			myEmailSMTPHost = properties.getProperty("myEmailSMTPHost","smtp.sina.com");
-			port = properties.getProperty("port","143");
-			sendMail = properties.getProperty("sendMail");
-			//解密密码
-			String password = properties.getProperty("sendMailPassword");
-			byte[] bytes=null;
-			bytes = EncryptionUtil.decode(EncryptionUtil.hex2byte(password), "asiainfo".getBytes());		
-			sendMailPassword = new String(bytes);
-			//===========
-			sendName = properties.getProperty("sendName");
-			receiveMail = properties.getProperty("receiveMail");
-			receiveName = properties.getProperty("receiveName");
-			charset = properties.getProperty("charset");
-			
-		} catch (IOException e) {
-			logger.error(e); 
-			e.printStackTrace();
-		} catch (Exception e) {
-			logger.error(e);
-			e.printStackTrace();
-		}
+    private String contextPath = null;
+    
+    public MailUtil(){
+    	initMailConfig();
     }
     
-    
-    public static void main(String[] args) throws Exception {
-    	System.out.println(sendMailPassword);
+    public MailUtil(String context){
+    	this.contextPath = context;
+    	initMailConfig();
     }
+     
+    public void setContextPath(String contextPath) {
+		this.contextPath = contextPath;
+		initMailConfig();
+	}
 
     /**
      * 创建一封只包含文本的简单邮件
@@ -86,7 +64,7 @@ public class MailUtil {
      * @return
      * @throws Exception
      */
-    public static MimeMessage createMimeMessage(Session session, String sendMail, String sendName, String receiveMail,
+    private MimeMessage createMimeMessage(Session session, String sendMail, String sendName, String receiveMail,
             String receiveName, String subject, String contant, String charset) throws Exception {
         // 1. 创建一封邮件
         MimeMessage message = new MimeMessage(session);
@@ -114,7 +92,7 @@ public class MailUtil {
         return message;
     }
 
-    public static void sendMailBySmtp(String subject,String contant) {
+    public void sendMailBySmtp(String subject,String contant) {
         // 1. 创建参数配置, 用于连接邮件服务器的参数配置
         Properties props = new Properties(); // 参数配置
         props.setProperty("mail.transport.protocol", "smtp"); // 使用的协议（JavaMail规范要求）
@@ -166,5 +144,37 @@ public class MailUtil {
         }
     }
     
-    
+    private  void initMailConfig(){
+    	if(contextPath == null){
+    		contextPath = "mail.properties";
+    	}	
+    	try {
+        	Properties properties = new Properties();
+        	//加载配置文件
+        	InputStream is = MailUtil.class.getClassLoader().getResourceAsStream(contextPath);
+        	
+			properties.load(new InputStreamReader(is,"UTF-8"));	
+					
+			myEmailSMTPHost = properties.getProperty("myEmailSMTPHost","smtp.sina.com");
+			port = properties.getProperty("port","143");
+			sendMail = properties.getProperty("sendMail");
+			//解密密码
+			String password = properties.getProperty("sendMailPassword");
+			byte[] bytes=null;
+			bytes = EncryptionUtil.decode(EncryptionUtil.hex2byte(password), "asiainfo".getBytes());		
+			sendMailPassword = new String(bytes);
+			//===========
+			sendName = properties.getProperty("sendName");
+			receiveMail = properties.getProperty("receiveMail");
+			receiveName = properties.getProperty("receiveName");
+			charset = properties.getProperty("charset");
+			
+		} catch (IOException e) {
+			logger.error(e);
+			e.printStackTrace();
+		} catch (Exception e) {
+			logger.error(e);
+			e.printStackTrace();
+		}
+    }
 }
