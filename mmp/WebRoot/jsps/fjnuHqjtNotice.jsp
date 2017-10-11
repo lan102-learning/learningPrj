@@ -13,14 +13,19 @@
 <title>福建师大后勤公告推送</title>
 <script type="text/javascript">
 $(document).ready(function(){
-    $("#addTime").click(function(){
-      $("#catchTime").append("<div class=\"input-group date form_time col-md-5\" data-date=\"\" data-date-format=\"hh:ii\" data-link-field=\"dtp_input3\" data-link-format=\"hh:ii\"> <input class=\"form-control\" size=\"16\" type=\"text\" value=\"\" readonly> <span class=\"input-group-addon\"><span class=\"glyphicon glyphicon-remove\"></span></span> <span class=\"input-group-addon\"><span class=\"glyphicon glyphicon-time\"></span></span> <span id=\"removeTime\" class=\"input-group-addon\"><span class=\"glyphicon glyphicon-minus\"></span></span> </div>");
+    $("#addTime").click(function(){//动态生成 时间选择
+      $("#catchTime").append("<div class=\"input-group date form_time col-md-5\" data-date=\"\" data-date-format=\"hh:ii\" data-link-field=\"dtp_input3\" data-link-format=\"hh:ii\"> <input class=\"form-control\" size=\"16\" type=\"text\" value=\"\" readonly> <span class=\"input-group-addon\"><span class=\"glyphicon glyphicon-remove\"></span></span> <span class=\"input-group-addon\"><span class=\"glyphicon glyphicon-time\"></span></span> <span class=\"input-group-addon\"><span  class=\"glyphicon glyphicon-minus removeTime\"></span></span> </div>");
+      $.initDataPlugin();
     });
   
-  $("#catchTime div removeTime").click(function(){
-      var current = $(this);
-  });
-  
+    $(document).on("click", ".removeTime", function() {
+        if($(".removeTime").length==1){
+            alert("至少需要一个时间");
+            return;
+        }
+        $(this).parent().parent().remove();
+    });
+    
   });    
 </script>
 <style type="text/css">
@@ -40,9 +45,19 @@ padding: 0px;
           <input class="form-control" size="16" type="text" value="" readonly>
           <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
           <span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>
-          <span class="input-group-addon"><span class="glyphicon glyphicon-minus"></span></span>
+          <span class="input-group-addon"><span  class="glyphicon glyphicon-minus removeTime"></span></span>
        </div>
 	  </div>
+	  <div id="catchTime" class="form-group">
+       <label >发送邮件时间：每日</label>
+       <button id="addTime" type="button" class="btn btn-default glyphicon glyphicon-plus littlebutton" > </button>
+       <div class="input-group date form_time col-md-5" data-date="" data-date-format="hh:ii" data-link-field="dtp_input3" data-link-format="hh:ii">
+          <input class="form-control" size="16" type="text" value="" readonly>
+          <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+          <span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>
+          <span class="input-group-addon"><span  class="glyphicon glyphicon-minus removeTime"></span></span>
+       </div>
+      </div>
 	  <div class="form-group">
         <label >推送邮箱</label>
         <input type="email" class="form-control" size="16" id="exampleInputEmail1" placeholder="邮箱"  >
@@ -51,6 +66,7 @@ padding: 0px;
     </form>
 </div>
 <script type="text/javascript">
+$.initDataPlugin = function(){
     $('.form_datetime').datetimepicker({
         //language:  'fr',
         weekStart: 1,
@@ -82,7 +98,9 @@ padding: 0px;
         maxView: 1,
         forceParse: 0
     });
-    
+};
+
+$.initDataPlugin();
 </script>
 </body>
 </html>

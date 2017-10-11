@@ -34,7 +34,10 @@
     });
 </script>
 <style type="text/css">
-
+.subMenu{
+font-size: 10px;
+/*background-color: rgba(51, 122, 183, 0.68);*/
+}
 </style>
 </head>
 <body>
@@ -45,9 +48,9 @@
 			<ul id="indexMenu" class="nav nav-pills nav-stacked ">
 				<li role="presentation" class="active"><a target="../jsps/welcome.jsp">Home</a></li>
 				<li role="presentation"><a target="../jsps/fjnuHqjtNotice.jsp">福建师大后勤公告推送</a>
-				    <ul id="noticeMenu" class="nav nav-pills nav-stacked " hidden >
+				    <ul id="noticeMenu" class="nav nav-pills nav-stacked subMenu" hidden >
                         <li role="presentation" ><a >邮件设置</a></li>
-                        <li role="presentation"><a >时间设置</a></li>
+                        <li role="presentation" ><a >时间设置</a></li>
                     </ul>
 				</li>
 				<li role="presentation"><a target="../jsps/2.jsp">2</a></li>
