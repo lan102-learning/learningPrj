@@ -21,7 +21,7 @@ public class FjnuHqjtNoticeService extends AbstractService {
 		String subject = "service 通知";
 		String content = "niubi niubi";
 		//2.推送邮件
-//		sendMessage(subject, content);
+		sendMessage(subject, content);
 	}
 
 }
