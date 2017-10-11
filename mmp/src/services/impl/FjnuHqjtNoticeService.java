@@ -18,10 +18,10 @@ public class FjnuHqjtNoticeService extends AbstractService {
 	public void run() {
 		//1.后勤  服务实现
 		
-		String subject = "";
-		String content = "";
+		String subject = "service 通知";
+		String content = "niubi niubi";
 		//2.推送邮件
-		sendMessage(subject, content);	
+//		sendMessage(subject, content);
 	}
 
 }

@@ -1,12 +1,12 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<!-- <?xml version="1.0" encoding="UTF-8"?>  -->
 <!-- service配置文件      service-class的value为类的全限定名   service-prop：该service邮箱推送的配置文件路径-->
-<configuration>
+<!--<configuration>
 	<service id="fjnuHqjtNoticeService">
 		<property name="service-class" value="services.impl.FjnuHqjtNoticeService" />
-		<property name="service-prop" value="resource/prop/mail_fjnuHqjtNotice.properties" />
+		<property name="service-prop" value="mail.properties" />
 	</service>
 	<service id="weatherNoticeService">
-		<property name="service-class" value="service.WeatherNoticeService" />
+		<property name="service-class" value="services.impl.WeatherNoticeService" />
 		<property name="service-prop" value="resource/prop/mail_weatherNotice.properties" />
 	</service>
-</configuration>
+</configuration> -->

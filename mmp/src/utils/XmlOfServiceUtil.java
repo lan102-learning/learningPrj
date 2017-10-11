@@ -44,6 +44,8 @@ public class XmlOfServiceUtil {
 //				System.out.println(list.get(0).getValue());
 				// 比较id值
 				if (serviceId.equals(list.get(0).getValue())) {
+					//存储class
+					resultMap.put("service-class", list.get(1).getValue());
 					// service子节点
 					Iterator iterator = service.elementIterator();
 					while (iterator.hasNext()) {
@@ -105,6 +107,9 @@ public class XmlOfServiceUtil {
 						}         		
 					}
             	}
+            	//存储class
+            	proMap.put("service-class", list.get(1).getValue());
+            	
             	resultMap.put(serviceId, proMap);
             }
 			return resultMap;

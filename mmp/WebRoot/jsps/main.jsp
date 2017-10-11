@@ -56,7 +56,7 @@
 		<div id="iframeContent" class="col-md-9" ><!-- 窗体 -->
 		</div>
 	</div>
-	<footer class="footer">
+	<footer >
 	       <h4 class="text-center">footer</h4>
     </footer>
 </div>
