@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- service配置文件      class为类的全限定名   service-prop：该service邮箱推送的配置文件路径-->
+<configuration>
+	<service id="fjnuHqjtNoticeService" class="services.impl.FjnuHqjtNoticeService">
+		<property name="service-prop" value="resource/prop/mail_fjnuHqjtNotice.properties" />
+	</service>
+	
+	<service id="weatherNoticeService" class="services.impl.WeatherNoticeService"/>
+</configuration>
