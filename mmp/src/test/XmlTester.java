@@ -8,7 +8,7 @@ import utils.XmlOfServiceUtil;
 public class XmlTester {
 
 	public static void main(String[] args) {
-		XmlOfServiceUtil util = new XmlOfServiceUtil("resource/cfg/test.xml");
+		XmlOfServiceUtil util = new XmlOfServiceUtil("resource/cfg/service.xml");
 		Map<String,String> map = util.getServiceCfgById("fjnuHqjtNoticeService");
 		System.out.println(map.get("service-class"));
 		System.out.println(map.get("service-prop"));

@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=utf-8"
-	pageEncoding="utf-8"%>
+<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -19,22 +18,39 @@
 	integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
 	crossorigin="anonymous"></script>
 <title>信息管理平台</title>
+<script type="text/javascript">
+
+    $(function() {
+        $.get("main/main.html", function(data) {
+            $("#iframeContent").html(data);//初始化加载界面  
+        });
+
+        $('#indexMenu li').click(function() {//点击li加载界面  
+            var current = $(this);
+            target = current.find('a').attr('target'); // 找到链接a中的targer的值  
+            alert("存在非法字符" + target);
+            $.get(target, function(data) {
+                $("#iframeContent").html(data);
+            });
+        });
+    });
+</script>
 </head>
 <body>
 <div class="container-fluid"><!--  -->
-    <div class="row" ><h1 >信息管理平台</h1></div><!-- header -->
+    <div class="row" ><h1 class="text-center" contenteditable="true">信息管理平台</h1></div><!-- header -->
 	<div class="row"><!-- body -->
-		<div class="col-md-3">
-			<ul class="nav nav-pills nav-stacked">
-			<li role="presentation" class="active"><a href="#">Home</a></li>
-			<li role="presentation"><a href="#">Profile</a></li>
-			<li role="presentation"><a href="#">Messages</a></li>
+		<div class="col-md-3"><!-- 导航栏 -->
+			<ul class="nav nav-pills nav-stacked ">
+			<li role="presentation" class="active"><a target="main/main.html">Home</a></li>
+			<li role="presentation"><a target="main/Profile.html">Profile</a></li>
+			<li role="presentation"><a target="main/Messages.html">Messages</a></li>
 			</ul>
 		</div>
-		<div class="col-md-9">
+		<div id="iframeContent" class="col-md-9" ><!-- 窗体 -->
 		</div>
 	</div>
-	<div class="row">footer</div><!-- footer -->
+	<div class="row text-center" ><h4>footer</h4></div><!-- footer -->
 </div>
 </body>
 </html>
